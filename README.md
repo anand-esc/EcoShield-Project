@@ -52,6 +52,14 @@ We aggregated and ingested several massive, real-world Indian Environmental Law 
 3. **Client-Side Caching:** The Next.js dashboard utilizes a custom React Cache. If a user submits an identical request, the UI instantly loads the cached JSON blueprint, completely eliminating duplicate API calls and protecting the Gemini token quota.
 4. **PII Scrubbing:** The backend automatically redacts simulated personally identifiable information (PII) before sending payloads to external cloud LLMs.
 
+---
+
+## ⚙️ CI/CD & Automated Testing
+
+EcoShield features a robust, enterprise-grade Continuous Integration pipeline:
+- **GitHub Actions (Cloud CI/CD):** Every push to the `main` branch triggers an automated cloud workflow that provisions an Ubuntu server, runs the entire Python `pytest` backend suite, and compiles a production Next.js frontend build.
+- **Jenkins (Local CI/CD):** A cross-platform `Jenkinsfile` is included for local Windows automation. It natively spins up virtual environments and runs multi-stage deployment tests via `bat` commands.
+
 ## 🚀 How to Run Locally
 
 1. **Start the FastAPI Backend**

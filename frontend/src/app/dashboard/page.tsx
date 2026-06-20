@@ -101,7 +101,7 @@ export default function Dashboard() {
   };
 
   // Animation variants
-  const staggerContainer = {
+  const staggerContainer: any = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -109,7 +109,7 @@ export default function Dashboard() {
     }
   };
   
-  const listItemVariant = {
+  const listItemVariant: any = {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
   };
