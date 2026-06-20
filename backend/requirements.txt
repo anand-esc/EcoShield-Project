@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+langchain
+langchain-community
+langchain-ibm
+supabase
+pypdf
+python-dotenv
+pydantic
+pytest
+sentence-transformers
+langchain-huggingface
+langchain-google-genai

@@ -1,0 +1,32 @@
+graph TD
+    classDef data fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff
+    classDef ai_ibm fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff,font-weight:bold
+    classDef ai_google fill:#f59e0b,stroke:#b45309,stroke-width:2px,color:#fff,font-weight:bold
+    classDef db fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#fff
+    classDef backend fill:#64748b,stroke:#334155,stroke-width:2px,color:#fff
+
+    sublayer1(Data Ingestion Phase)
+    PDFs[Legal Policy PDFs]:::data
+    Splitter[LangChain Chunking]:::backend
+    IBM[IBM Granite Embeddings]:::ai_ibm
+    Supa1[(Supabase pgvector)]:::db
+
+    PDFs -->|Load 1300+ Pages| Splitter
+    Splitter -->|1275 Chunks| IBM
+    IBM -->|Generate 768d Vectors| Supa1
+
+    sublayer2(Real-Time RAG Reasoning Phase)
+    Input[User Input: Chemicals + Location]:::data
+    Gemini1[Gemini 2.5 Flash: Extract & Formulate]:::ai_google
+    HF[HuggingFace Local Embeddings]:::backend
+    Supa2[(Supabase Search)]:::db
+    Gemini2[Gemini 2.5 Flash: Synthesize Checklist]:::ai_google
+    Output[Final JSON Compliance Plan]:::data
+
+    Input --> Gemini1
+    Gemini1 -->|Formulated Semantic Query| HF
+    HF -->|Embed Query| Supa2
+    Supa2 -->|Return Top 8 Law Contexts| Gemini2
+    Gemini2 --> Output
+
+    Supa1 -.->|Stores Vector Data| Supa2
