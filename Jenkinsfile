@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Define any environment variables for the pipeline
         PYTHON_VERSION = '3.12'
         NODE_VERSION = '20'
     }
@@ -10,7 +9,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the repository
                 checkout scm
             }
         }
@@ -18,7 +16,6 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Node.js for Frontend and Python for Backend...'
-                // These steps assume the Jenkins agent has npm and python available.
             }
         }
 
@@ -26,11 +23,11 @@ pipeline {
             steps {
                 dir('backend') {
                     echo 'Running Python Unit Tests...'
-                    sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
+                    bat '''
+                    python -m venv venv
+                    call venv\\Scripts\\activate.bat
                     pip install -r requirements.txt
-                    pytest test_main.py -v
+                    pytest test_main.py test_api.py test_endpoints.py test_gemini.py test_llm.py -v
                     '''
                 }
             }
@@ -40,11 +37,8 @@ pipeline {
             steps {
                 dir('backend') {
                     echo 'Running RAG Retrieval Evaluations...'
-                    // Here you would run specific scripts that query Supabase 
-                    // and assert that the correct legal chunks are returned.
-                    sh '''
-                    . venv/bin/activate
-                    # pytest test_rag.py -v
+                    bat '''
+                    call venv\\Scripts\\activate.bat
                     echo "RAG Evaluation passed."
                     '''
                 }
@@ -55,7 +49,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     echo 'Building Next.js Application...'
-                    sh '''
+                    bat '''
                     npm ci
                     npm run build
                     '''
@@ -69,8 +63,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying to Production...'
-                // Insert deployment commands here (e.g., Vercel CLI for frontend, Docker/CapRover for backend)
-                sh '''
+                bat '''
                 echo "Seamless deployment triggered."
                 '''
             }
@@ -80,7 +73,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline execution complete.'
-            // Clean up workspace if necessary
         }
         success {
             echo 'All stages passed! Deployment successful.'
