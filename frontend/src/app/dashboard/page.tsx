@@ -38,7 +38,8 @@ export default function Dashboard() {
     const finalPayload = chemicals + fileNote;
     
     try {
-      const response = await fetch("http://localhost:8000/api/analyze", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/analyze";
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ chemical_list: finalPayload, location }),
